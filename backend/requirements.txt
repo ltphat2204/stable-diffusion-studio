@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+diffusers
+transformers
+accelerate
+safetensors
+huggingface_hub
+python-multipart
+cachetools
