@@ -5,6 +5,14 @@
 
 ---
 
+## 📸 Demo
+
+### Giao diện
+![Screen](/docs/screen.png)
+
+### Tạo ảnh
+![Demo](/docs/demo.png)
+
 ## 🚀 Tính năng nổi bật
 
 - **🔍 Tìm kiếm mô hình**: Tra cứu và lựa chọn các mô hình text-to-image trực tiếp từ Hugging Face Hub.  
@@ -136,7 +144,7 @@ Ví dụ: `http://127.0.0.1:8000`
 
 ### 5. Chạy ứng dụng
 
-#### Terminal 1 – Chạy Backend
+#### Terminal 1 - Chạy Backend
 
 ```bash
 cd backend
@@ -146,7 +154,7 @@ uvicorn main:app --reload
 
 > Backend sẽ chạy tại: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
-#### Terminal 2 – Chạy Frontend
+#### Terminal 2 - Chạy Frontend
 
 ```bash
 cd frontend
