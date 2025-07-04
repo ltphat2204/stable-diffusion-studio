@@ -13,17 +13,27 @@
 ### Tạo ảnh
 ![Demo](/docs/demo.png)
 
+### So sánh mô hình
+![Compare](/docs/compare.png)
+
+### Xem ảnh chi tiết
+![Modal](/docs/modal.png)
+
 ## 🚀 Tính năng nổi bật
 
-- **🔍 Tìm kiếm mô hình**: Tra cứu và lựa chọn các mô hình text-to-image trực tiếp từ Hugging Face Hub.  
-- **📝 Tạo ảnh linh hoạt**: Nhập prompt và negative prompt để kiểm soát nội dung hình ảnh đầu ra.  
-- **⚙️ Tùy chọn nâng cao**: Tinh chỉnh các thông số như `Steps`, `Guidance Scale`, kèm theo tooltip giải thích trực quan.  
-- **📥 Tải xuống nhanh chóng**: Hình ảnh được tạo có thể tải về dễ dàng, tên file tự động sinh từ nội dung prompt.  
-- **🖥️ Giao diện hiện đại**: Thiết kế tối màu, responsive, thân thiện với người dùng, sử dụng Remix và TailwindCSS.  
-- **🚀 Tối ưu hiệu năng**: Tự động phát hiện và sử dụng GPU (NVIDIA/CUDA) để tăng tốc xử lý nếu khả dụng.  
-- **📋 Quản lý form hiệu quả**: Tích hợp Formik để xử lý trạng thái form một cách mượt mà.  
-- **📦 Bộ nhớ đệm mô hình**: Backend tự động lưu trữ các mô hình đã tải, giúp giảm thời gian chờ ở các lần sử dụng sau.
-
+-   **🎨 Chế độ So sánh Model:** Tính năng cốt lõi cho phép bạn tạo ảnh từ **hai model khác nhau** với cùng một prompt và cấu hình, giúp so sánh trực quan hiệu quả của từng model.
+-   **🖼️ Xem ảnh chi tiết (Modal Viewer):** Click vào bất kỳ ảnh nào để xem ở kích thước lớn hơn trong một modal tiện lợi.
+-   **🔍 Tìm kiếm Model động:** Tìm kiếm và lựa chọn các model text-to-image trực tiếp từ Hugging Face Hub.
+-   **⚙️ Tùy chỉnh Nâng cao:** Toàn quyền kiểm soát các tham số quan trọng như Steps, Guidance Scale, và Negative Prompt, với tooltip giải thích chi tiết.
+-   **📥 Tải ảnh dễ dàng:** Tải xuống hình ảnh đã tạo chỉ với một cú nhấp chuột.
+-   **✨ Giao diện Hiện đại & Thông minh:**
+    -   Giao diện dark-mode, responsive, thân thiện người dùng.
+    -   Các ô nhập prompt tự động co giãn theo nội dung.
+    -   Giao diện tự động thay đổi khi bật/tắt chế độ so sánh.
+-   **🚀 Tối ưu Hiệu năng:**
+    -   Backend tự động tận dụng GPU (NVIDIA/CUDA) nếu có để tăng tốc độ tạo ảnh.
+    -   Frontend gọi API tuần tự ở chế độ so sánh để tránh quá tải VRAM.
+    -   Model đã tải được cache lại để không phải chờ đợi ở những lần tạo ảnh sau.
 ---
 
 ## 🛠️ Công nghệ sử dụng
