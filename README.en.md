@@ -98,7 +98,7 @@ python -m venv venv
 **Windows:**
 
 ```powershell
-.env\Scriptsctivate
+.\env\Scripts\activate
 ```
 
 **macOS/Linux:**

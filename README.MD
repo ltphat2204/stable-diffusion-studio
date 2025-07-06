@@ -2,8 +2,7 @@
 
 Looking for English version? [Click here](/README.en.md)
 
-**Stable Diffusion Studio** là một giao diện web hiện đại, dễ sử dụng, giúp bạn khám phá và thử nghiệm các mô hình **Stable Diffusion** ngay trên máy tính cá nhân.  
-Ứng dụng hỗ trợ tìm kiếm mô hình trực tiếp từ Hugging Face, điều chỉnh các tham số, và tạo ra các tác phẩm nghệ thuật AI một cách nhanh chóng và thuận tiện.
+**Stable Diffusion Studio** là một dự án cá nhân để thử nghiệm các mô hình Stable Diffusion ngay trên máy cá nhân. Ứng dụng hỗ trợ tìm model từ Hugging Face, tinh chỉnh prompt, tăng tốc bằng GPU và tạo ảnh nhanh chóng.
 
 ---
 
