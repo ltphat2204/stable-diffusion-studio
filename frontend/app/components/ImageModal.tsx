@@ -1,8 +1,21 @@
 import { useEffect } from 'react';
 import { XMarkIcon } from './Icon';
 import type { ImageModalProps } from '~/types';
+import { t, Language } from '../lib/i18n';
 
-export function ImageModal({ image, onClose }: ImageModalProps) {
+interface ImageModalProps {
+  image: {
+    image_base64: string;
+    metadata: {
+      model_id: string;
+      prompt: string;
+    };
+  };
+  onClose: () => void;
+  language?: Language;
+}
+
+export function ImageModal({ image, onClose, language = 'vi' }: ImageModalProps) {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
@@ -22,7 +35,7 @@ export function ImageModal({ image, onClose }: ImageModalProps) {
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClose() }}
             role="button"
             tabIndex={0}
-            aria-label="Đóng modal xem ảnh"
+            aria-label={t('close', language)}
         >
             <div 
                 className="relative bg-gray-900 rounded-lg shadow-xl p-4 md:p-6 max-w-4xl max-h-[90vh] flex flex-col"
@@ -33,7 +46,7 @@ export function ImageModal({ image, onClose }: ImageModalProps) {
                 <button
                     onClick={onClose}
                     className="absolute -top-3 -right-3 z-10 p-1.5 text-white bg-gray-800 hover:bg-red-500 rounded-full"
-                    aria-label="Đóng"
+                    aria-label={t('close', language)}
                 >
                    <XMarkIcon className="w-5 h-5"/>
                 </button>

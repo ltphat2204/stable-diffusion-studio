@@ -10,6 +10,7 @@ import type { GenerateResponse, ImageGenerationFormValues } from "~/types";
 import { ImageGenerationForm } from "~/components/ImageGenerationForm";
 import { ResultsDisplay } from "~/components/ResultsDisplay";
 import { ImageModal } from "~/components/ImageModal";
+import { DashboardLayout } from "../components/DashboardLayout";
 
 export const meta: MetaFunction = () => {
     return [
@@ -31,6 +32,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const formData = await request.formData();
     
     const isCompareMode = !!formData.get("modelId2") && formData.get("modelId2") !== "";
+    const num_images = Math.max(1, Math.min(Number(formData.get("num_images")) || 1, 12));
 
     const basePayload = {
         prompt: formData.get("prompt") as string,
@@ -48,13 +50,17 @@ export async function action({ request }: ActionFunctionArgs) {
 
     try {
         const results = [];
-        const result1 = await generateImage({ ...basePayload, model_id: modelId1 }, backendUrl);
-        results.push(result1);
+        for (let i = 0; i < num_images; i++) {
+            const result1 = await generateImage({ ...basePayload, model_id: modelId1 }, backendUrl);
+            results.push(result1);
+        }
 
         if (isCompareMode) {
             const modelId2 = formData.get("modelId2") as string;
-            const result2 = await generateImage({ ...basePayload, model_id: modelId2 }, backendUrl);
-            results.push(result2);
+            for (let i = 0; i < num_images; i++) {
+                const result2 = await generateImage({ ...basePayload, model_id: modelId2 }, backendUrl);
+                results.push(result2);
+            }
         }
         return json({ results, error: "" }, { status: 200 });
     } catch (error: unknown) {
@@ -75,6 +81,7 @@ export default function Index() {
     const [showAdvanced, setShowAdvanced] = useState(false);
     const [selectedImage, setSelectedImage] = useState<GenerateResponse | null>(null);
     const submit = useSubmit();
+    const [language, setLanguage] = useState<'vi' | 'en'>('vi');
 
     const formik = useFormik<ImageGenerationFormValues>({
         initialValues: {
@@ -86,12 +93,14 @@ export default function Index() {
             width: 512,
             num_steps: 25,
             guidance_scale: 7.5,
+            num_images: 1,
         },
         validate: (values) => {
             const errors: Partial<ImageGenerationFormValues> = {};
             if (!values.modelId) errors.modelId = 'Bắt buộc';
             if (!values.prompt) errors.prompt = 'Bắt buộc';
             if (isCompareMode && !values.modelId2) errors.modelId2 = 'Bắt buộc';
+            if (values.num_images < 1 || values.num_images > 12) errors.num_images = '1-12';
             return errors;
         },
         onSubmit: (values) => {
@@ -107,19 +116,11 @@ export default function Index() {
     });
 
     return (
-        <div className="min-h-screen bg-gray-900 text-gray-200 flex flex-col items-center p-4 sm:p-8">
-            <Tooltip id="advanced-tooltip" style={{ maxWidth: '250px', zIndex: 999 }}/>
-            <ImageModal image={selectedImage} onClose={() => setSelectedImage(null)} />
-
-            <header className="w-full max-w-5xl mb-8 text-center">
-                <h1 className="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-                    Stable Diffusion Studio
-                </h1>
-                <p className="text-gray-400 mt-2">Thử nghiệm và so sánh các model Stable Diffusion.</p>
-            </header>
-
-            <main className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <DashboardLayout
+            sidebar={
+                <>
+                    <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-4 text-left w-full">Stable Diffusion Studio</h1>
+                    {/* Logo removed as requested */}
                     <ImageGenerationForm 
                         formik={formik}
                         isSubmitting={isSubmitting}
@@ -128,16 +129,43 @@ export default function Index() {
                         showAdvanced={showAdvanced}
                         onShowAdvancedChange={() => setShowAdvanced(prev => !prev)}
                         error={actionData?.error}
+                        language={language}
                     />
-                </div>
-                <div className="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col justify-center items-center">
-                    <ResultsDisplay 
-                        isSubmitting={isSubmitting} 
-                        actionData={actionData} 
-                        onImageSelect={setSelectedImage}
-                    />
-                </div>
-            </main>
-        </div>
+                </>
+            }
+            main={
+                <>
+                    {/* Top bar with language selector */}
+                    <div className="h-16 w-full flex items-center border-b border-gray-700 mb-6 px-4 justify-end">
+                        <div className="flex gap-2 items-center mt-4 mb-2">
+                            <button
+                                className={`px-3 py-1 rounded-md font-medium ${language === 'en' ? 'bg-purple-600 text-white' : 'bg-gray-700 text-gray-300'}`}
+                                onClick={() => setLanguage('en')}
+                                type="button"
+                            >
+                                English
+                            </button>
+                            <button
+                                className={`px-3 py-1 rounded-md font-medium ${language === 'vi' ? 'bg-purple-600 text-white' : 'bg-gray-700 text-gray-300'}`}
+                                onClick={() => setLanguage('vi')}
+                                type="button"
+                            >
+                                Tiếng Việt
+                            </button>
+                        </div>
+                    </div>
+                    <div className="flex-1 min-h-0 overflow-y-auto">
+                        <Tooltip id="advanced-tooltip" style={{ maxWidth: '250px', zIndex: 999 }}/>
+                        <ImageModal image={selectedImage} onClose={() => setSelectedImage(null)} language={language} />
+                        <ResultsDisplay 
+                            isSubmitting={isSubmitting} 
+                            actionData={actionData} 
+                            onImageSelect={setSelectedImage}
+                            language={language}
+                        />
+                    </div>
+                </>
+            }
+        />
     );
 }
